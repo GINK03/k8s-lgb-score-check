@@ -50,6 +50,12 @@ HTTPサーバは私の以前の[JSONのやりとりの個人プロジェクト](
 　作成したDockerコンテナは[こちら](https://hub.docker.com/r/nardtree/lightgbm-clf/)
  
  動作はこのようにローカルで行えます。  
+ 
+```console
+$ docker pull nardtree/lightgbm-clf
+$ docker run -it nardtree/lightgbm-clf 40-predict.py
+```
+
 **挙動のチェック**  
 
 ポジティブな文を投入してみる
