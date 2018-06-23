@@ -69,3 +69,14 @@ Hello World程度であれば少ないリソースでいいのですが、少し
 <div align="center">
  <img width="600px" src="https://user-images.githubusercontent.com/4949982/41807407-b6230f3e-7709-11e8-9200-ae5ab6efe85b.png">
 </div>
+
+## 実際にアクセスする
+　今回はマイクロサービスのデザインパターンにのっとり、jsonでデータをやり取りし、任意のテキスト情報から、そのテキストのレビューとしての⭐の数を予想します。  
+  stress-testing.pyで負荷テストを行っています。  
+  K8Sの特性としてか、SLAを大幅に超過したときに、httpサーバが応答しなくなってしまうので、これは実運用の際にはよく考えたほうが良さそうです。  
+  
+```python
+$ DOCKER=35.189.146.153 python3 stress-testing.py 
+...
+elapsed time 18.113281965255737
+```
