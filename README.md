@@ -31,6 +31,14 @@ $ docker images
 $ docker tag 5a60e4460a15 asia.gcr.io/${YOUR_PROJECT_NAME}/${CONTAINER_NAME}
 ```
 
+**gcrへコンテナのアップロード**  
+```console
+$ gcloud docker -- push asia.gcr.io/${YOUR_PROJECT_NAME}/${CONTAINER_NAME}:latest
+```
+今回は、CONTAINER_NAMEは`lightgbm-clf`としました  
+
+※[docker hub](https://hub.docker.com/r/nardtree/lightgbm-clf/)に置いてあるので参考にしてください
+
 ## K8Sへのデプロイ
 
 K8Sへのデプロイは、コマンドだと、デプロイ時の進捗の情報が充分でないのでWebUIで行う例を示します。  
