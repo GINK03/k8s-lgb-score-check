@@ -177,6 +177,9 @@ Dockerで簡潔にかつ素早くサービスを提供する仕組みを提供�
 
 小さい案件を一瞬で終わらせるデザインパターンとして、有益なように思います。  
 
+**kubeflowではなくてk8sをやった理由**  
+　圧倒的に高い自由度と、Dockerコンテナをそれなりにちゃんと整えていたので、kubeflowのワークフローに乗せるメリットは今回の設定では少なかった。そのため、生のk8sを利用しました。  
+
 **参照したドキュメント**
  - [Machine Learning Toolkit for Kubernetes](https://github.com/kubeflow/kubeflow)
  - [Mercari ML Ops Night Vol.1 を開催しました](http://tech.mercari.com/entry/mercari-mlopsnight-1)
