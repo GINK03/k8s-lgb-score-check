@@ -177,6 +177,12 @@ Dockerで簡潔にかつ素早くサービスを提供する仕組みを提供�
 
 小さい案件を一瞬で終わらせるデザインパターンとして、有益なように思います。  
 
-実際に使用したコードはこちら  
+**参照したドキュメント**
+ - [Machine Learning Toolkit for Kubernetes](https://github.com/kubeflow/kubeflow)
+ - [Mercari ML Ops Night Vol.1 を開催しました](http://tech.mercari.com/entry/mercari-mlopsnight-1)
+ - [機械学習ではじめるDocker](https://gink03.github.io/Docker/)
+ - [ML Ops on AWS](https://dev.classmethod.jp/cloud/aws/awssummit-2018-day2-h1-3-16-ml-ops-on-aws/)
+ 
+**実際に使用したコードはこちら**  
 
 [https://github.com/GINK03/k8s-lgb-score-check:embed]
