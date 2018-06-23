@@ -30,7 +30,7 @@
 
 HTTPサーバは私の以前の[JSONのやりとりの個人プロジェクト](https://github.com/GINK03/loose-coupling-json-over-http)を参照しています。  
 
-予想システムは映画.comさまのコーパスを利用して、LightGBMでテキストコーパスから予想を行います。学習と評価に使ったスクリプトとコーパスはこちらになります。  
+予想システムは映画.comさまのコーパスを利用して、LightGBMでテキストコーパスから予想を行います。学習と評価に使った[スクリプトとコーパスはこちら](https://github.com/GINK03/k8s-lgb-score-check/tree/master/train-corpus)になります。  
 
 
 **Dockerコンテナに集約する**  
