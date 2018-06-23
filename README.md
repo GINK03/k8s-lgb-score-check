@@ -46,3 +46,6 @@ Hello World程度であれば少ないリソースでいいのですが、少し
  <img width="600px" src="https://user-images.githubusercontent.com/4949982/41807394-9074b710-7709-11e8-924d-e322a05049c8.png">
 </div>
 
+<div align="center">
+ <img width="600px" src="https://user-images.githubusercontent.com/4949982/41807397-97034efc-7709-11e8-874d-d10bacefdd77.png">
+</div>
