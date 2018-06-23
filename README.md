@@ -26,6 +26,7 @@ Cloud Container Registryへの登録は、タグが、`asia.gcr.io/${YOUR_PROJEC
 $ docker commit 44f751eb4c19
 sha256:5a60e4460a156f4ca2465f4eb71983fbd040a084116884bcb40e88e3537cdc38
 $ docker images
+REPOSITORY                                         TAG                 IMAGE ID            CREATED             SIZE
 <none>                                             <none>              5a60e4460a15        2 minutes ago       8.39GB
 ...
 $ docker tag 5a60e4460a15 asia.gcr.io/${YOUR_PROJECT_NAME}/${CONTAINER_NAME}
