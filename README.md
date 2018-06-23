@@ -1,17 +1,8 @@
-# TODO
 
-- モデルを含んだDockerコンテナの作成
-- Google Container Registryへの配置
-- k8sサービスに乗せる
-
-- (必要ならばk8sのパラメータチューニング)
-
-
-# K8Sで機械学習の予想システムを作成する　　
+# K8Sで機械学習の予想システムを作成　　
 
 **目次**  
- - 今の機械学習のシステムの粒度はDocker
- - Dockerのデプロイ先としてのK8S
+ - 機械学習の最小粒度としてのDocker, Dockerのデプロイ先としてのk8s
  - Dockerコンテナの作り方
  - DockerコンテナのGoogle Cloud Container Registryへの登録
  - K8Sへのデプロイ
