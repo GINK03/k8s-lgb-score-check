@@ -47,6 +47,9 @@ HTTPサーバは私の以前の[JSONのやりとりの個人プロジェクト](
 
 　ベストプラクティスは様々な企業文化があるので、それに従うといいでしょうが、雑な方法については[こちら](https://github.com/GINK03/gink03.github.io/blob/master/_posts/configs/2017-12-12-Docker.md)で説明しているので、参考にしていただければ幸いです。
 
+　作成したDockerコンテナは[こちら](https://hub.docker.com/r/nardtree/lightgbm-clf/)
+ 
+ 動作はこのようにローカルで行えます。  
 **挙動のチェック**  
 
 ポジティブな文を投入してみる
