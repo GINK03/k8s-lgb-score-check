@@ -15,9 +15,9 @@
  GCPではコンテナを使ったデプロイメントサービスはKubernetes Engineがデフォルトであり、WebUIやCUIでの操作例を示したドキュメントも充実してきました。  
  k8sは、ローリングリリースが簡単にできたり、分析者からDocker Fileやコンテナが適切に受け渡しが開発者に行われれば、デプロイまでの時間的労力的消耗を最小化できたりします。  
  
- また、Micro Serviceのデザインパターンとして、Dockerが一つの管理粒度になり、そこだけで閉じてしまえば、自分の責任範囲を明確にし、役割が明確になり、**「分析 ->  モデルの評価＆作成 -> IFの定義 -> コード作成 -> Dockerに固める」**　というプロセスに落とすことができ、進捗も良くなります。  
+ また、Micro Serviceのデザインパターンとして、Dockerが一つの管理粒度になり、そこだけで閉じてしまえば、自分の責任範囲を明確にし、役割が明確になり、**「分析 ->  モデルの評価＆作成 -> IFの定義 -> コード作成 -> Dockerに固める」**というプロセスに落とすことができ、進捗も良くなります。  
  
- 今回はjson形式で日本語の自然言語を受け取り、映画のレビューだとした場合、星がいくつなのがを予想するトイプロブレムをk8sに実際にデプロイして使ってみるまでを説明します。  
+ 今回はjson形式で日本語の自然言語を受け取り、映画のレビューの星がいくつなのがを予想するトイプロブレムをk8sに実際にデプロイして使ってみるまでを説明します。  
  
  今回のk8sのデザインはこのようなスタイルになります。  
 <div align="center">
@@ -26,14 +26,15 @@
 
 ## テキストを評価するAPIのDockerコンテナの作り方
 
-**トイプロブレムの予想モデルの要件**
+**トイプロブレムの予想モデルの要件**  
+
 - 任意のテキストをhttp経由でjsonを受け取る
 - テキストを分かち書きし、ベクトル化する
 - ベクトル化した情報に基づき、テキストが映画レビューならば、レビューの星何個に該当するか予想する
 - 予想した星の数をhttp経由でjsonで返却する
 - 以上の挙動をする仕組みをDockerコンテナとして提供する
 
-HTTPサーバは私の以前の[JSONのやりとりの個人プロジェクト](https://github.com/GINK03/loose-coupling-json-over-http)を参照しています。  
+HTTPサーバは私の以前の[JSONでサーバクライアント間のやりとりのプロジェクト](https://github.com/GINK03/loose-coupling-json-over-http)を参照しています。  
 
 予想システムは映画.comさまのコーパスを利用して、LightGBMでテキストコーパスから星の数の予想を行います。学習と評価に使った[スクリプトとコーパスはこちら](https://github.com/GINK03/k8s-lgb-score-check/tree/master/train-corpus)になります。  
 
@@ -50,7 +51,7 @@ HTTPサーバは私の以前の[JSONのやりとりの個人プロジェクト](
 
 　作成したDockerコンテナは[こちら](https://hub.docker.com/r/nardtree/lightgbm-clf/)
  
- 動作はこのようにローカルで行えます。  
+　動作はこのようにローカルでも行えます。  
  
 ```console
 $ docker pull nardtree/lightgbm-clf
@@ -64,19 +65,19 @@ $ docker run -it nardtree/lightgbm-clf 40-predict.py
 $ curl -v -H "Accept: application/json" -H "Content-type: application/json" -X POST -d '{"texts":"すごい！最高に興奮した！楽しい"}'  http://localhost:4567/api/1/users
 {"score": 4.77975661771051}
 ```
-(星５が最高なので、ほぼ最高)
+(星５が最高なので、ほぼ最高と正しく予想できている)
 
 ネガティブな文を投入してみる
 ```console
 $ curl -v -H "Accept: application/json" -H "Content-type: application/json" -X POST -d '{"texts":"この映画は全くだめ、楽しくない。駄作"}' http://localhost:4567/api/1/users
 {"score": 1.2809874000768104}
 ```
-(星1が最低)
+(星1が最低と、正しく予想できている)
 
 ## DockerコンテナのGoogle Cloud Container Registryへの登録
 
 Cloud Container Registryへの登録は、タグが、`asia.gcr.io/${YOUR_PROJECT_NAME}/${CONTAINER_NAME}`となっている必要があるので、
-一度、このようにコミットして、別のタグを付けます。  
+このようにコミットして、実行中のコンテナに対して、別のタグを付けます。  
 ```console
 $ docker commit 44f751eb4c19
 sha256:5a60e4460a156f4ca2465f4eb71983fbd040a084116884bcb40e88e3537cdc38
@@ -97,7 +98,7 @@ $ gcloud docker -- push asia.gcr.io/${YOUR_PROJECT_NAME}/${CONTAINER_NAME}:lates
 
 ## K8Sへのデプロイ
 
-K8Sへのデプロイは、コマンドだと、デプロイ時の進捗の情報が充分でないのでWebUIで行う例を示します。  
+K8Sへのデプロイは、コマンドだと、デプロイ時の進捗の情報が充分に見れないのでWebUIで行う例を示します。  
 
 GCPのKubernetes Engineにアクセスし、クラスタを作成します。  
 
@@ -117,7 +118,7 @@ Hello World程度であれば少ないリソースでいいのですが、少し
  <img width="600px" src="https://user-images.githubusercontent.com/4949982/41807393-8951188e-7709-11e8-9ddd-a801160bc0e0.png">
 </div>
 
-コンテナレジストリに登録したご自身のDockerコンテナを指定し、このコンテナの起動に必要な引数を入力します。  
+コンテナレジストリに登録したご自身のDockerコンテナを指定し、このコンテナのサービスの実行に必要な引数を入力します。  
 
 <div align="center">
  <img width="600px" src="https://user-images.githubusercontent.com/4949982/41807394-9074b710-7709-11e8-924d-e322a05049c8.png">
@@ -127,13 +128,13 @@ Hello World程度であれば少ないリソースでいいのですが、少し
  <img width="600px" src="https://user-images.githubusercontent.com/4949982/41807397-97034efc-7709-11e8-874d-d10bacefdd77.png">
 </div>
 
-機械学習のモデルと各種依存ライブラリを含んだDockerコンテナはサイズが大きいので、しばらく、待ちます（10分程度）  
+機械学習のモデルと各種依存ライブラリを含んだDockerコンテナはサイズが大きいので、ダウンロードが完了しデプロイが終わるまでしばらく待ちます（10分程度）  
 
 <div align="center">
  <img width="600px" src="https://user-images.githubusercontent.com/4949982/41807399-9ee7943e-7709-11e8-9f49-69fb22efb912.png">
 </div>
 
-外部に公開するために、IPの割当と、Portのマッピングを行います。  
+外部に公開するために、IPの割当とPortのマッピングを行います。  
 
 このとき、サービスタイプはロードバランサーを選択します。  
 
@@ -148,11 +149,11 @@ Hello World程度であれば少ないリソースでいいのですが、少し
 </div>
 
 ## 実際にアクセスする
-　今回はマイクロサービスのデザインパターンにのっとり、jsonでデータをやり取りし、任意のテキスト情報から、そのテキストの映画のレビューとしての⭐の数を予想します。  
+　今回はマイクロサービスのデザインパターンにのっとり、jsonでデータをやり取りし、任意のテキスト情報から、そのテキストの映画のレビューとしての星の数を予想します。  
   stress-testing.pyで1000件の自然言語のコーパスに対して、負荷テストを行っています。  
   K8Sの特性としてか、SLAを大幅に超過したときに、httpサーバが応答しなくなってしまうので、これは実運用の際にはよく考えたほうが良さそうです。  
  
-**GCP　K8Sで予想する**
+**GCP K8Sで予想する**
 ```console
 $ DOCKER=35.189.146.153 python3 stress-testing.py 
 ...
@@ -173,14 +174,16 @@ elapsed time 5.5899786949157715
 
 ## まとめ
 
-Dockerで簡潔にかつ素早くサービスを提供する仕組みを提供する仕組みとしてとても良いと思います。  
+Dockerで簡潔にかつ素早くサービスを提供する仕組みを提供する仕組みとしてとてもよさそうです。  
 
 小さい案件を一瞬で終わらせるデザインパターンとして、有益なように思います。  
 
 **kubeflowではなくてk8sをやった理由**  
-　圧倒的に高い自由度と、Dockerコンテナをそれなりにちゃんと整えていたので、kubeflowのワークフローに乗せるメリットは今回の設定では少なかった。そのため、生のk8sを利用しました。  
 
-**参照したドキュメント**
+フレームワークを利用しないことによる、圧倒的に高い自由度と、ベースとなるDockerコンテナをそれなりにちゃんと整えていたので、kubeflowのワークフローに乗せるメリットは今回の設定では少なかったです。そのため、生のk8sを利用しました。  
+
+**参照したドキュメント**  
+
  - [Machine Learning Toolkit for Kubernetes](https://github.com/kubeflow/kubeflow)
  - [Mercari ML Ops Night Vol.1 を開催しました](http://tech.mercari.com/entry/mercari-mlopsnight-1)
  - [機械学習ではじめるDocker](https://gink03.github.io/Docker/)
