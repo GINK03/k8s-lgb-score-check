@@ -17,7 +17,10 @@
  
  また、Micro Serviceのデザインパターンとして、Dockerが一つの管理粒度になり、そこだけで閉じてしまえば、自分の責任範囲を明確にし、役割が明確になり、**「分析 ->  モデルの評価＆作成 -> IFの定義 -> コード作成 -> Dockerに固める」**　というプロセスに落とすことができ、進捗も良くなります。  
  
- 
+ 今回のk8sのデザインはこのようなスタイルになります。  
+<div align="center">
+  <img width="550px" src="https://user-images.githubusercontent.com/4949982/41809085-7a17abe4-7722-11e8-8895-f7d43cad01e9.png">
+</div>
 
 ## テキストを評価するAPIのDockerコンテナの作り方
 
