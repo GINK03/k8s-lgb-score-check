@@ -31,6 +31,7 @@
 - 予想した星の数をhttp経由でjsonで返却する
 - 以上の挙動をする仕組みをDockerコンテナとして提供する
 
+
 HTTPサーバは私の以前の[JSONのやりとりの個人プロジェクト](https://github.com/GINK03/loose-coupling-json-over-http)を参照しています。  
 
 予想システムは映画.comさまのコーパスを利用して、LightGBMでテキストコーパスから予想を行います。学習と評価に使った[スクリプトとコーパスはこちら](https://github.com/GINK03/k8s-lgb-score-check/tree/master/train-corpus)になります。  
@@ -43,6 +44,22 @@ HTTPサーバは私の以前の[JSONのやりとりの個人プロジェクト](
 　それとは別に、アドホックなオペレーションをある程度許容する方法も可能ではあり、Dockerの中に入ってしまって、様々な環境を構築して、commitしてしまうのもありかと思っています（というか楽です）  
 
 　ベストプラクティスは様々な企業文化があるので、それに従うといいでしょうが、雑な方法については[こちら](https://github.com/GINK03/gink03.github.io/blob/master/_posts/configs/2017-12-12-Docker.md)で説明しているので、参考にしていただければ幸いです。
+
+**挙動のチェック**  
+
+ポジティブな文を投入してみる
+```console
+$ curl -v -H "Accept: application/json" -H "Content-type: application/json" -X POST -d '{"texts":"すごい！最高に興奮した！楽しい"}'  http://localhost:4567/api/1/users
+{"score": 4.77975661771051}
+```
+(星５が最高なので、ほぼ最高)
+
+ネガティブな文を投入してみる
+```console
+$ curl -v -H "Accept: application/json" -H "Content-type: application/json" -X POST -d '{"texts":"この映画は全くだめ、楽しくない。駄作"}' http://localhost:4567/api/1/users
+{"score": 1.2809874000768104}
+```
+(星1が最低)
 
 ## DockerコンテナのGoogle Cloud Container Registryへの登録
 
