@@ -49,3 +49,23 @@ Hello World程度であれば少ないリソースでいいのですが、少し
 <div align="center">
  <img width="600px" src="https://user-images.githubusercontent.com/4949982/41807397-97034efc-7709-11e8-874d-d10bacefdd77.png">
 </div>
+
+機械学習のモデルと各種依存ライブラリを含んだDockerコンテナはサイズが大きいので、しばらく、待ちます（10分程度）  
+
+<div align="center">
+ <img width="600px" src="https://user-images.githubusercontent.com/4949982/41807399-9ee7943e-7709-11e8-9f49-69fb22efb912.png">
+</div>
+
+外部に公開するために、IPの割当と、Portのマッピングを行います。  
+
+このとき、サービスタイプはロードバランサーを選択します。  
+
+<div align="center">
+ <img width="600px" src="https://user-images.githubusercontent.com/4949982/41807401-a7b0507e-7709-11e8-91e8-5f4864a11314.png">
+</div>
+
+外部IPが得られるので、次の項で、実際にアクセスしてみましょう。  
+
+<div align="center">
+ <img width="600px" src="https://user-images.githubusercontent.com/4949982/41807407-b6230f3e-7709-11e8-9200-ae5ab6efe85b.png">
+</div>
